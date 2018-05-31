@@ -4,9 +4,9 @@ The VPS you plan to install your masternode on needs to have at least 1GB of RAM
 
 ## Funding your Masternode
 
-* First, we will do the initial collateral TX and send exactly 5000 BWK to one of our addresses. To keep things sorted in case we setup more masternodes we will label the addresses we use.
+* First, we will do the initial collateral TX and send exactly 2500 NORT to one of our addresses. To keep things sorted in case we setup more masternodes we will label the addresses we use.
 
-  - Open your BWK wallet and switch to the "Receive" tab.
+  - Open your NORT wallet and switch to the "Receive" tab.
 
   - Click into the label field and create a label, I will use MN1
 
@@ -14,7 +14,7 @@ The VPS you plan to install your masternode on needs to have at least 1GB of RAM
 
   - The generated address will now be labelled as MN1 If you want to setup more masternodes just repeat the steps so you end up with several addresses for the total number of nodes you wish to setup. Example: For 10 nodes you will need 10 addresses, label them all.
 
-  - Once all addresses are created send 5000 BWK each to them. Ensure that you send exactly 5000 BWK and do it in a single transaction. You can double check where the coins are coming from by checking it via coin control usually, that's not an issue.
+  - Once all addresses are created send 5000 NORT each to them. Ensure that you send exactly 5000 NORT and do it in a single transaction. You can double check where the coins are coming from by checking it via coin control usually, that's not an issue.
 
 * As soon as all 5k transactions are done, we will wait for 15 confirmations. You can check this in your wallet or use the explorer. It should take around 30 minutes if all transaction have 15 confirmations
 
@@ -38,11 +38,11 @@ masternode outputs
 
 Copy both the key and output information to a text file.
 
-Close your wallet and open the Bulwark Appdata folder. Its location depends on your OS.
+Close your wallet and open the Northern Appdata folder. Its location depends on your OS.
 
-* **Windows:** Press Windows+R and write %appdata% - there, open the folder Bulwark.  
-* **macOS:** Press Command+Space to open Spotlight, write ~/Library/Application Support/Bulwark and press Enter.  
-* **Linux:** Open ~/.bulwark/
+* **Windows:** Press Windows+R and write %appdata% - there, open the folder Northern.  
+* **macOS:** Press Command+Space to open Spotlight, write ~/Library/Application Support/Northern and press Enter.  
+* **Linux:** Open ~/.Northern/
 
 In your appdata folder, open masternode.conf with a text editor and add a new line in this format to the bottom of the file:
 
@@ -63,14 +63,14 @@ Restart and unlock your wallet.
 SSH (Putty on Windows, Terminal.app on macOS) to your VPS, login as root (**Please note:** It's normal that you don't see your password after typing or pasting it) and run the following command:
 
 ```bash
-bash <( curl https://raw.githubusercontent.com/bulwark-crypto/Bulwark-MN-Install/master/install.sh )
+bash <( curl https://raw.githubusercontent.com/Northern-crypto/Northern-MN-Install/master/install.sh )
 ```
 
 When the script asks, confirm your VPS IP Address and paste your masternode key (You can copy your key and paste into the VPS if connected with Putty by right clicking)
 
 The installer will then present you with a few options.
 
-**PLEASE NOTE**: Do not choose the advanced installation option unless you have experience with Linux and know what you are doing - if you do and something goes wrong, the Bulwark team CANNOT help you, and you will have to restart the installation.
+**PLEASE NOTE**: Do not choose the advanced installation option unless you have experience with Linux and know what you are doing - if you do and something goes wrong, the Northern team CANNOT help you, and you will have to restart the installation.
 
 Follow the instructions on screen.
 
@@ -83,25 +83,7 @@ This can take up to a few hours. Do not close this window.
 
 Once you see "Masternode setup completed." on screen, you are done.
 
-## Refreshing Node
 
-If your masternode is stuck on a block or behaving badly, you can refresh it.
-Please note that this script must be run as root.
-
-```
-bash <( curl https://raw.githubusercontent.com/bulwark-crypto/Bulwark-MN-Install/master/refresh_node.sh )
-```
-
-No other attention is required.
-
-## Updating Node
-
-To update your node please run this command and follow the instructions.
-Please note that this script must be run as root.
-
-```
-bash <( curl https://raw.githubusercontent.com/bulwark-crypto/Bulwark-MN-Install/master/update_node.sh )
-```
 
 ## Non-interactive installation
 
