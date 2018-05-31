@@ -82,7 +82,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 clear
 
-# Set these to change the version of Bulwark to install
+# Set these to change the version of northern to install
 TARBALLURL="https://github.com/zabtc/Northern/archive/1.0.0.tar.gz"
 TARBALLNAME="1.0.0.tar.gz"
 BOOTSTRAPURL=""
@@ -160,13 +160,13 @@ fi
 
 if [[ ("$ADVANCED" == "y" || "$ADVANCED" == "Y") ]]; then
 
-USER=bulwark
+USER=northern
 
 adduser $USER --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password > /dev/null
 
 INSTALLERUSED="#Used Advanced Install"
 
-echo "" && echo 'Added user "bulwark"' && echo ""
+echo "" && echo 'Added user "northern"' && echo ""
 sleep 1
 
 else
@@ -240,7 +240,7 @@ cp ./$BWKVERSION/northern-cli /usr/local/bin
 cp ./$BWKVERSION/northern-tx /usr/local/bin
 rm -rf $BWKVERSION
 
-# Create .bulwark directory
+# Create .northern directory
 mkdir $USERHOME/.northern
 
 # Install bootstrap file
@@ -248,7 +248,7 @@ if [[ ("$BOOTSTRAP" == "y" || "$BOOTSTRAP" == "Y" || "$BOOTSTRAP" == "") ]]; the
   echo "skipping"
 fi
 
-# Create bulwark.conf
+# Create northern.conf
 touch $USERHOME/.northern/northern.conf
 cat > $USERHOME/.norhtern/northern.conf << EOL
 ${INSTALLERUSED}
