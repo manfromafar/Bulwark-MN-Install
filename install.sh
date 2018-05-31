@@ -55,7 +55,7 @@ case $key in
     -h|--help)
     cat << EOL
 
-Bulwark Masternode installer arguments:
+NORT Masternode installer arguments:
 
     -n --normal               : Run installer in normal mode
     -a --advanced             : Run installer in advanced mode
@@ -83,11 +83,11 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 clear
 
 # Set these to change the version of Bulwark to install
-TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-linux64.tar.gz"
-TARBALLNAME="bulwark-1.2.4.0-linux64.tar.gz"
-BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bootstrap.dat.zip"
-BOOTSTRAPARCHIVE="bootstrap.dat.zip"
-BWKVERSION="1.2.4.0"
+TARBALLURL="https://github.com/zabtc/Northern/archive/1.0.0.tar.gz"
+TARBALLNAME="1.0.0.tar.gz"
+BOOTSTRAPURL=""
+BOOTSTRAPARCHIVE=""
+BWKVERSION="1.0.0"
 
 #!/bin/bash
 
@@ -143,7 +143,7 @@ echo "
  |               installation method.               |::
  |                                                  |::
  |  Otherwise, your masternode will not work, and   |::
- | the Bulwark Team CANNOT assist you in repairing  |::
+ | the NORT Team CANNOT assist you in repairing  |::
  |         it. You will have to start over.         |::
  |                                                  |::
  +------------------------------------------------+::
@@ -174,7 +174,7 @@ else
 USER=root
 FAIL2BAN="y"
 UFW="y"
-BOOTSTRAP="y"
+BOOTSTRAP="n"
 INSTALLERUSED="#Used Basic Install"
 fi
 
@@ -231,27 +231,26 @@ if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
   yes | ufw enable
 fi
 
-# Install Bulwark daemon
+# Install NORT daemon
 wget $TARBALLURL
-tar -xzvf $TARBALLNAME && mv bin bulwark-$BWKVERSION
+tar -xzvf $TARBALLNAME && mv bin $BWKVERSION
 rm $TARBALLNAME
-cp ./bulwark-$BWKVERSION/bulwarkd /usr/local/bin
-cp ./bulwark-$BWKVERSION/bulwark-cli /usr/local/bin
-cp ./bulwark-$BWKVERSION/bulwark-tx /usr/local/bin
-rm -rf bulwark-$BWKVERSION
+cp ./$BWKVERSION/northernd /usr/local/bin
+cp ./$BWKVERSION/northern-cli /usr/local/bin
+cp ./$BWKVERSION/northern-tx /usr/local/bin
+rm -rf $BWKVERSION
 
 # Create .bulwark directory
-mkdir $USERHOME/.bulwark
+mkdir $USERHOME/.northern
 
 # Install bootstrap file
 if [[ ("$BOOTSTRAP" == "y" || "$BOOTSTRAP" == "Y" || "$BOOTSTRAP" == "") ]]; then
-  echo "Installing bootstrap file..."
-  wget $BOOTSTRAPURL && unzip $BOOTSTRAPARCHIVE -d $USERHOME/.bulwark/ && rm $BOOTSTRAPARCHIVE
+  echo "skipping"
 fi
 
 # Create bulwark.conf
-touch $USERHOME/.bulwark/bulwark.conf
-cat > $USERHOME/.bulwark/bulwark.conf << EOL
+touch $USERHOME/.northern/northern.conf
+cat > $USERHOME/.norhtern/northern.conf << EOL
 ${INSTALLERUSED}
 rpcuser=${RPCUSER}
 rpcpassword=${RPCPASSWORD}
@@ -267,34 +266,34 @@ masternodeaddr=${IP}
 masternodeprivkey=${KEY}
 masternode=1
 EOL
-chmod 0600 $USERHOME/.bulwark/bulwark.conf
-chown -R $USER:$USER $USERHOME/.bulwark
+chmod 0600 $USERHOME/.northern/northern.conf
+chown -R $USER:$USER $USERHOME/.northern
 
 sleep 1
 
-cat > /etc/systemd/system/bulwarkd.service << EOL
+cat > /etc/systemd/system/northern.service << EOL
 [Unit]
-Description=bulwarkd
+Description=northernd
 After=network.target
 [Service]
 Type=forking
 User=${USER}
 WorkingDirectory=${USERHOME}
-ExecStart=/usr/local/bin/bulwarkd -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark
-ExecStop=/usr/local/bin/bulwark-cli -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark stop
+ExecStart=/usr/local/bin/northernd -conf=${USERHOME}/.northern/northern.conf -datadir=${USERHOME}/.northern
+ExecStop=/usr/local/bin/northern-cli -conf=${USERHOME}/.northern/northern.conf -datadir=${USERHOME}/.northern stop
 Restart=on-abort
 [Install]
 WantedBy=multi-user.target
 EOL
-sudo systemctl enable bulwarkd
-sudo systemctl start bulwarkd
+sudo systemctl enable northernd
+sudo systemctl start northernd
 
 clear
 
 echo "Your masternode is syncing. Please wait for this process to finish."
 echo "This can take up to a few hours. Do not close this window." && echo ""
 
-until su -c "bulwark-cli mnsync status 2>/dev/null | grep '\"IsBlockchainSynced\" : true' > /dev/null" $USER; do
+until su -c "northern-cli mnsync status 2>/dev/null | grep '\"IsBlockchainSynced\" : true' > /dev/null" $USER; do
   for (( i=0; i<${#CHARS}; i++ )); do
     sleep 2
     echo -en "${CHARS:$i:1}" "\r"
@@ -319,10 +318,10 @@ read -p "Press Enter to continue after you've done that. " -n1 -s
 clear
 
 sleep 1
-su -c "/usr/local/bin/bulwark-cli startmasternode local false" $USER
+su -c "/usr/local/bin/northern-cli startmasternode local false" $USER
 sleep 1
 clear
-su -c "/usr/local/bin/bulwark-cli masternode status" $USER
+su -c "/usr/local/bin/northern-cli masternode status" $USER
 sleep 5
 
 echo "" && echo "Masternode setup completed." && echo ""
