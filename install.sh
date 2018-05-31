@@ -235,9 +235,9 @@ fi
 wget $TARBALLURL
 tar -xzvf $TARBALLNAME && mv bin $BWKVERSION
 rm $TARBALLNAME
-cp ./$BWKVERSION/northernd /usr/local/bin
-cp ./$BWKVERSION/northern-cli /usr/local/bin
-cp ./$BWKVERSION/northern-tx /usr/local/bin
+cp ./northernd /usr/local/bin
+cp ./northern-cli /usr/local/bin
+cp ./northern-tx /usr/local/bin
 rm -rf $BWKVERSION
 
 # Create .northern directory
